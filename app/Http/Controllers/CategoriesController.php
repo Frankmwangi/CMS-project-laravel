@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Categories;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('categories.index');
+        return view('categories.index')->with('categories',Categories::all());
     }
 
     /**
@@ -34,7 +35,17 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'name' =>'required|unique:categories'
+        ]);
+
+        
+
+        Categories::create([
+            'name' => $request->name
+        ]);
+
+        return redirect(route('categories.index'));
     }
 
     /**
